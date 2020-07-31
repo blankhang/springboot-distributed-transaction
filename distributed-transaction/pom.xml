@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.blankhang</groupId>
+        <artifactId>springboot-distributed-transaction</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath> <!-- lookup parent from repository -->
+    </parent>
+
+    <artifactId>distributed-transaction</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>distributed-transaction</name>
+    <description>SpringBoot 2.3 + Druid + MybatisPlus + Atomikos 分布式事务</description>
+
+    <properties>
+        <java.version>11</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <druid.version>1.1.23</druid.version>
+        <mysql.version>8.0.11</mysql.version>
+        <mybatis-plus-boot-starter.version>3.3.2</mybatis-plus-boot-starter.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <!--  swagger 3.0 开始可以自动装配了 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <!--druid 目前只支持在此版本或以下使用XA事务-->
+            <version>${mysql.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <!--druid 数据库连接池-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>${druid.version}</version>
+        </dependency>
+        <!--分布式事务-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jta-atomikos</artifactId>
+        </dependency>
+        <!-- mybatis-plus https://mvnrepository.com/artifact/com.baomidou/mybatis-plus-boot-starter -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>${mybatis-plus-boot-starter.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>tomcat-jdbc</artifactId>
+                    <groupId>org.apache.tomcat</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!--自动代码生成依赖-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+            <version>${mybatis-plus-boot-starter.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- 打包时跳过测试 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!--依赖仓库配置-->
+    <repositories>
+
+        <!--阿里云的 mvn 仓库镜像-->
+        <repository>
+            <id>aliyun maven</id>
+            <url>https://maven.aliyun.com/repository/central</url>
+        </repository>
+
+        <!--阿里云的 spring 仓库镜像-->
+        <repository>
+            <id>aliyun spring</id>
+            <url>https://maven.aliyun.com/repository/spring</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+
+        <!--阿里云的 google 仓库镜像-->
+        <repository>
+            <id>aliyun google</id>
+            <url>https://maven.aliyun.com/repository/google</url>
+        </repository>
+
+        <!--阿里云的 jcenter 仓库镜像-->
+        <repository>
+            <id>aliyum jcenter</id>
+            <url>https://maven.aliyun.com/repository/jcenter</url>
+        </repository>
+
+        <!--阿里云的 grails-core 仓库镜像-->
+        <repository>
+            <id>aliyun grails-core</id>
+            <url>https://maven.aliyun.com/repository/grails-core</url>
+        </repository>
+
+        <!--阿里云的 mapr-public 仓库镜像-->
+        <repository>
+            <id>aliyun mapr-public</id>
+            <url>https://maven.aliyun.com/repository/mapr-public</url>
+        </repository>
+
+        <!-- mvnrepository 仓库-->
+        <repository>
+            <id>mvnrepository</id>
+            <url>http://mvnrepository.com</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+
+        <!--maven 中央仓库-->
+        <repository>
+            <id>maven center repo</id>
+            <url>http://repo1.maven.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+
+        <!--maven 中央仓库2-->
+        <repository>
+            <id>maven center repo 2</id>
+            <url>http://central.maven.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+
+
+        <!--third part repo 第三方依赖仓库-->
+        <repository>
+            <id>third party repo</id>
+            <url>http://jaspersoft.artifactoryonline.com/jaspersoft/third-party-ce-artifacts/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+
+        <!--    转换工具依赖仓库     -->
+        <repository>
+            <id>alfresco maven repo</id>
+            <url>https://artifacts.alfresco.com/nexus/content/groups/public</url>
+        </repository>
+
+    </repositories>
+
+    <!--maven插件依赖仓库-->
+    <pluginRepositories>
+
+        <!--阿里云的 mvn 仓库镜像-->
+        <pluginRepository>
+            <id>alimaven</id>
+            <url>https://maven.aliyun.com/repository/central</url>
+        </pluginRepository>
+
+        <!--阿里云的 spring 仓库镜像-->
+        <pluginRepository>
+            <id>aliyumspring</id>
+            <name>aliyun spring</name>
+            <url>https://maven.aliyun.com/repository/spring</url>
+        </pluginRepository>
+
+        <!--阿里云的 spring-plugin 仓库镜像-->
+        <pluginRepository>
+            <id>aliyumspring-plugin</id>
+            <url>https://maven.aliyun.com/repository/spring-plugin</url>
+        </pluginRepository>
+
+        <!--阿里云的 google 仓库镜像-->
+        <pluginRepository>
+            <id>aliyumgoogle</id>
+            <url>https://maven.aliyun.com/repository/google</url>
+        </pluginRepository>
+
+        <!--阿里云的 jcenter 仓库镜像-->
+        <pluginRepository>
+            <id>aliyumjcenter</id>
+            <url>https://maven.aliyun.com/repository/jcenter</url>
+        </pluginRepository>
+
+        <!--阿里云的 grails-core 仓库镜像-->
+        <pluginRepository>
+            <id>aliyumgrails-core</id>
+            <url>https://maven.aliyun.com/repository/grails-core</url>
+        </pluginRepository>
+
+        <!--阿里云的 mapr-public 仓库镜像-->
+        <pluginRepository>
+            <id>aliyummapr-public</id>
+            <url>https://maven.aliyun.com/repository/mapr-public</url>
+        </pluginRepository>
+
+        <!--mvnrepository 仓库-->
+        <pluginRepository>
+            <id>mvnrepository</id>
+            <url>http://mvnrepository.com/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+
+        <!--maven 中央仓库-->
+        <pluginRepository>
+            <id>maven center repo</id>
+            <url>http://repo1.maven.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+
+        <!--maven 中央仓库2-->
+        <pluginRepository>
+            <id>central repo</id>
+            <url>http://central.maven.org/maven2/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+</project>

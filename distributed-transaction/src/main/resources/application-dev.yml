@@ -1,0 +1,95 @@
+#开发模式
+debug: false
+
+logging:
+  level:
+    root: info
+    com:
+      blankhang: debug
+      atomikos:
+        datasource:
+          xa:
+            # 事务日志级别
+            XAResourceTransaction: debug
+
+server:
+  # 服务监听端口
+  port: 8700
+  servlet:
+    # 系统接口前缀
+    context-path: /api
+
+spring:
+  jta:
+    # 事务管理器唯一标识符
+    transaction-manager-id: txManager
+    log-dir: transaction-logs
+    atomikos:
+      datasource:
+        borrow-connection-timeout: 10000
+        min-pool-size: 5
+        max-pool-size: 10
+      properties:
+        # 事务超时时间 300 0000ms 默认10 000ms
+        default-jta-timeout: 300000
+        max-actives: 50
+        max-timeout: 300000
+        enable-logging: true
+        logBaseDir: transaction-logs
+  datasource:
+    type: com.alibaba.druid.pool.xa.DruidXADataSource
+    druid:
+      master:
+        name: master
+        username: blank
+        url: jdbc:mysql://192.168.1.101:39091/master?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&noDatetimeStringSync=true&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=Asia/Shanghai
+#        password: pS4Jy3bG6kdLDTbDLYVj
+        # 加密
+        password: HkAeZ5FlNMO/EcxlKMn2MwkXk3RoS9CQvP0Yjqdp0CdJm92sJQkVuACi9vB/gL2fU0Z6woP1ELVAkBNxUUBzdw==
+        connection-properties: config.decrypt=true;config.decrypt.key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAIDTrevKkuE35n9itroxUSzH+8wQR2H342cWKf9faCcfy0UAfkvmuJzRSvt+DMjV0K+vmIuKByS7zNvmRfa8SscCAwEAAQ==
+        initialSize: 10
+        minIdle: 10
+        maxActive: 100
+        maxWait: 60000
+        poolPreparedStatements: true
+        maxPoolPreparedStatementPerConnectionSize: 20
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        validationQuery: SELECT 1 FROM DUAL
+        validationQueryTimeout: 10000
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        statViewServlet:
+          enabled: true
+          urlPattern: /druid/*
+          #login-username: admin
+          #login-password: admin
+        # 如果是加密密码 则必须配置 filters: config 否则链接会失败
+        filters: config,stat,wall,log4j2
+      second:
+        name: second
+        url: jdbc:mysql://192.168.1.101:39091/second?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&noDatetimeStringSync=true&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=Asia/Shanghai
+        username: blank
+        # 加密
+        password: HkAeZ5FlNMO/EcxlKMn2MwkXk3RoS9CQvP0Yjqdp0CdJm92sJQkVuACi9vB/gL2fU0Z6woP1ELVAkBNxUUBzdw==
+        connection-properties: config.decrypt=true;config.decrypt.key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAIDTrevKkuE35n9itroxUSzH+8wQR2H342cWKf9faCcfy0UAfkvmuJzRSvt+DMjV0K+vmIuKByS7zNvmRfa8SscCAwEAAQ==
+        initialSize: 10
+        minIdle: 10
+        maxActive: 100
+        maxWait: 60000
+        poolPreparedStatements: true
+        maxPoolPreparedStatementPerConnectionSize: 20
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        validationQuery: SELECT 1 FROM DUAL
+        validationQueryTimeout: 10000
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        statViewServlet:
+          enabled: true
+          urlPattern: /druid/*
+          #login-username: admin
+          #login-password: admin
+        filters: config,stat,wall,log4j2
