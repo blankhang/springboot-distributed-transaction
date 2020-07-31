@@ -1040,7 +1040,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 2020-07-31 14:37:56.814 DEBUG 3904 --- [nio-8700-exec-1] c.a.datasource.xa.XAResourceTransaction  : XAResource.rollback ( 3139322E3136382E312E3130302E746D313539363137373437363234373030303031:3139322E3136382E312E3130302E746D32 ) on resource second represented by XAResource instance com.mysql.cj.jdbc.MysqlXAConnection@45a3aa2
 2020-07-31 14:37:56.840 ERROR 3904 --- [nio-8700-exec-1] o.a.c.c.C.[.[.[.[dispatcherServlet]      : Servlet.service() for servlet [dispatcherServlet] in context with path [/api] threw exception [Request processing failed; nested exception is java.lang.ArithmeticException: / by zero] with root cause
 ```
-### 可以看到 出错后 日志中有 2条 rollback 的事务回滚
+可以看到 出错后 日志中有 2条 rollback 的事务回滚
 我们再次查询数据库  
 可以看到 2 张表仍然都是空的 数据按预期出错后全部回滚
 ```shell script
